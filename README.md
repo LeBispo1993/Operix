@@ -1,20 +1,3 @@
-# Operix
-OPERIX é uma plataforma web integrada para gestão empresarial, centralizando chamados, ordens de serviço, manutenção, TI, frota, EPIs, segurança do trabalho, almoxarifado, RH e treinamentos. Multiempresa, com controle de usuários e permissões, oferece organização, rastreabilidade e eficiência operacional.
-
-OPERIX — Sistema Integrado de Gestão Empresarial
-
-O OPERIX é uma plataforma web integrada para centralizar e simplificar processos operacionais e administrativos de empresas. O sistema reúne em um único ambiente a gestão de chamados, ordens de serviço, manutenção, TI, frota, segurança do trabalho, EPIs, almoxarifado, RH, treinamentos e solicitações internas.
-
-Desenvolvido com arquitetura multiempresa, o OPERIX possui controle de usuários, perfis, permissões e setores, permitindo que cada colaborador tenha acesso apenas aos módulos e funcionalidades correspondentes às suas atribuições.
-
-A plataforma foi projetada para oferecer rastreabilidade, organização, padronização de processos e acompanhamento das operações, substituindo controles descentralizados por uma solução única, moderna e escalável.
-
-Principais recursos: gestão multiempresa, chamados e ordens de serviço, manutenção preventiva/corretiva/preditiva, gestão de TI e ativos, frota, EPIs e segurança do trabalho, almoxarifado e estoque, RH, treinamentos, controle de acesso por perfil, dashboards, histórico e rastreabilidade das operações.
-
-Stack: React + TypeScript • Node.js • PostgreSQL • Nginx • Docker
-
-OPERIX — Gestão integrada para transformar solicitações em operações controladas.
-
 # Operix v1.01-2026
 
 Plataforma operacional multiempresa para Grafmarques, INFINNI e M.Print. Reúne chamados do solicitante, aprovação setorial, ordens de serviço, manutenção, TI, gestão de frota, avaliações obrigatórias, Segurança do Trabalho, almoxarifado, inventário de EPIs, cadastros, relatórios e controle de acesso.
