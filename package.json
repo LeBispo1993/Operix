@@ -1,1 +1,0 @@
-{"name":"operix","private":true,"scripts":{"dev":"concurrently \"pnpm --filter @operix/api dev\" \"pnpm --filter @operix/web dev\"","build":"pnpm --filter @operix/api build && pnpm --filter @operix/web build","test":"pnpm --filter @operix/api test"},"workspaces":["apps/*"],"devDependencies":{"concurrently":"^9.0.0"}}
