@@ -39,7 +39,7 @@ docker compose up --build -d
 docker compose ps
 ```
 
-A aplicação ficará em `WEB_PORT`, normalmente `http://localhost:8080`. A porta do PostgreSQL não é publicada.
+A aplicação ficará em `WEB_PORT`, normalmente `http://localhost:5174`. A porta do PostgreSQL não é publicada.
 
 ## Gerar os pacotes de entrega
 
