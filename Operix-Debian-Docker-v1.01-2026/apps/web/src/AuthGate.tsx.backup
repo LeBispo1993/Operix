@@ -1,0 +1,40 @@
+import React,{useEffect,useState}from'react';
+import{Eye,EyeOff,KeyRound,Lock,LogIn,ShieldCheck,User}from'lucide-react';
+
+export type AuthUser={personId:number;name:string;username:string;password:string;mustChange:boolean;role:string;company:string};
+const authKey='operix.auth.users';
+const datasetKey='operix.initial.dataset';
+const datasetVersion='production-initial-2026-08-24';
+const initialAdmin:AuthUser={personId:0,name:'Administrador',username:'admin',password:'admin',mustChange:false,role:'Administrador',company:'Grafmarques'};
+
+function prepareInitialDataset(){
+ if(localStorage.getItem(datasetKey)===datasetVersion)return;
+ const operationalPrefixes=['operix.fleet.','operix.hr.','operix.warehouse.','operix.training.','operix.sst.','operix.sectors.'];
+ Object.keys(localStorage).forEach(key=>{if(operationalPrefixes.some(prefix=>key.startsWith(prefix)))localStorage.removeItem(key)});
+ localStorage.setItem(authKey,JSON.stringify([initialAdmin]));
+ localStorage.removeItem('operix.roles');
+ localStorage.removeItem('operix.permissions');
+ localStorage.setItem(datasetKey,datasetVersion);
+ sessionStorage.removeItem('operix.authenticated');
+ sessionStorage.removeItem('operix.auth.user');
+}
+prepareInitialDataset();
+
+export function authUsers():AuthUser[]{
+ try{const saved=JSON.parse(localStorage.getItem(authKey)||'[]')as AuthUser[];if(saved.length)return saved}catch{}
+ localStorage.setItem(authKey,JSON.stringify([initialAdmin]));
+ return[initialAdmin];
+}
+function save(list:AuthUser[]){localStorage.setItem(authKey,JSON.stringify(list))}
+
+function NormalizedLogo({src,alt}:{src:string;alt:string}){const[image,setImage]=useState(src);useEffect(()=>{const source=new Image();source.onload=()=>{const canvas=document.createElement('canvas'),context=canvas.getContext('2d',{willReadFrequently:true});if(!context)return;canvas.width=source.naturalWidth;canvas.height=source.naturalHeight;context.drawImage(source,0,0);const pixels=context.getImageData(0,0,canvas.width,canvas.height).data;let left=canvas.width,top=canvas.height,right=0,bottom=0;for(let y=0;y<canvas.height;y++)for(let x=0;x<canvas.width;x++){const i=(y*canvas.width+x)*4,r=pixels[i],g=pixels[i+1],b=pixels[i+2],a=pixels[i+3];if(a>20&&(r<242||g<242||b<242)){left=Math.min(left,x);right=Math.max(right,x);top=Math.min(top,y);bottom=Math.max(bottom,y)}}if(right<=left||bottom<=top)return;const padding=Math.max(3,Math.round(Math.max(right-left,bottom-top)*.04)),sx=Math.max(0,left-padding),sy=Math.max(0,top-padding),width=Math.min(canvas.width-sx,right-left+padding*2),height=Math.min(canvas.height-sy,bottom-top+padding*2),trimmed=document.createElement('canvas');trimmed.width=width;trimmed.height=height;trimmed.getContext('2d')!.drawImage(source,sx,sy,width,height,0,0,width,height);setImage(trimmed.toDataURL('image/png'))};source.src=src},[src]);return <img src={image} alt={alt}/>}
+function Logos(){const companies=['Grafmarques','INFINNI','M.Print'];return <div className="login-logo-rail"><div>{[...companies,...companies].map((company,index)=>{const logo=localStorage.getItem(`operix.company.logo.${company}`);return <span key={`${company}-${index}`}>{logo?<NormalizedLogo src={logo} alt={`Logo ${company}`}/>:<b>{company}</b>}</span>})}</div></div>}
+
+export default function AuthGate({children}:{children:React.ReactNode}){
+ const[authenticated,setAuthenticated]=useState(()=>sessionStorage.getItem('operix.authenticated')==='true'),[account,setAccount]=useState<AuthUser|null>(null),[error,setError]=useState(''),[show,setShow]=useState(false);
+ useEffect(()=>{const logout=()=>{setAuthenticated(false);setAccount(null)};window.addEventListener('operix-logout',logout);return()=>window.removeEventListener('operix-logout',logout)},[]);
+ if(authenticated)return <>{children}</>;
+ const login=(event:React.FormEvent<HTMLFormElement>)=>{event.preventDefault();const data=new FormData(event.currentTarget),found=authUsers().find(item=>item.username.toLowerCase()===String(data.get('username')).trim().toLowerCase()&&item.password===String(data.get('password')));if(!found){setError('Login ou senha inválidos.');return}setError('');if(found.mustChange){setAccount(found);return}sessionStorage.setItem('operix.authenticated','true');sessionStorage.setItem('operix.auth.user',JSON.stringify(found));setAuthenticated(true)};
+ const change=(event:React.FormEvent<HTMLFormElement>)=>{event.preventDefault();if(!account)return;const data=new FormData(event.currentTarget),password=String(data.get('password')),confirm=String(data.get('confirm'));if(password.length<6){setError('A nova senha deve possuir pelo menos 6 caracteres.');return}if(password!==confirm){setError('A confirmação da senha não confere.');return}const updated={...account,password,mustChange:false};save(authUsers().map(item=>item.personId===account.personId?updated:item));sessionStorage.setItem('operix.authenticated','true');sessionStorage.setItem('operix.auth.user',JSON.stringify(updated));setAuthenticated(true)};
+ return <main className="login-page"><section className="login-brand"><span>GESTÃO OPERACIONAL</span><h1>{localStorage.getItem('operix.system.name')||'OPERIX'}</h1><p>Informação, segurança e produtividade em um único ambiente.</p><Logos/><div className="login-security"><ShieldCheck/><span><b>Ambiente protegido</b><small>Acesso individual e controlado</small></span></div><footer className="login-copyright"><span>®</span> Todos os direitos reservados Audo Bispo - v1.01-2026</footer></section><section className="login-panel"><form onSubmit={account?change:login}><div className="login-symbol"><Lock/></div><span>{account?'PRIMEIRO ACESSO':'BEM-VINDO'}</span><h2>{account?'Crie sua nova senha':'Acesse sua conta'}</h2><p>{account?`${account.name}, por segurança altere a senha inicial para continuar.`:'Informe seu login e sua senha para entrar no sistema.'}</p>{error&&<div className="login-error">{error}</div>}{account?<><label>Nova senha<div><KeyRound/><input name="password" type={show?'text':'password'} autoFocus required/><button type="button" onClick={()=>setShow(!show)}>{show?<EyeOff/>:<Eye/>}</button></div></label><label>Confirmar nova senha<div><KeyRound/><input name="confirm" type={show?'text':'password'} required/></div></label><button className="login-submit"><ShieldCheck/>Alterar senha e acessar</button></>:<><label>Login<div><User/><input name="username" autoComplete="username" required autoFocus/></div></label><label>Senha<div><KeyRound/><input name="password" type={show?'text':'password'} autoComplete="current-password" required/><button type="button" onClick={()=>setShow(!show)}>{show?<EyeOff/>:<Eye/>}</button></div></label><button className="login-submit"><LogIn/>Entrar no sistema</button></>}</form></section></main>
+}

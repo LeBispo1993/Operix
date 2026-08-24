@@ -1,0 +1,53 @@
+/* Company-aware color systems. Structural layout rules stay in the existing files. */
+.shell{--brand-primary:#0d9c89;--brand-primary-dark:#087563;--brand-primary-soft:#e7f7f3;--brand-secondary:#477ef3;--brand-accent:#27c2a7;--brand-sidebar:#0d1f3c;--brand-sidebar-hover:#17355d;--brand-line:linear-gradient(90deg,#0d9c89,#477ef3)}
+.shell.theme-grafmarques{--brand-primary:#167f9f;--brand-primary-dark:#0d617b;--brand-primary-soft:#e7f5f9;--brand-secondary:#db1a8b;--brand-accent:#f4b900;--brand-sidebar:#0b0d11;--brand-sidebar-hover:#20232a;--brand-line:linear-gradient(90deg,#00ed99 0 24%,#25a5d0 24% 49%,#f4bd07 49% 70%,#db1a8b 70% 100%)}
+.shell.theme-infinni{--brand-primary:#00a858;--brand-primary-dark:#007e43;--brand-primary-soft:#e7f8ef;--brand-secondary:#00aee8;--brand-accent:#ef3b48;--brand-sidebar:#0b0d10;--brand-sidebar-hover:#20242a;--brand-line:linear-gradient(90deg,#00b05a 0 17%,#8ab719 17% 28%,#f0d600 28% 39%,#f39a18 39% 50%,#ef3b48 50% 61%,#db258c 61% 72%,#00b8f5 72% 84%,#4b4da0 84% 92%,#15bda1 92% 100%)}
+.shell.theme-mprint{--brand-primary:#6254c7;--brand-primary-dark:#493aa5;--brand-primary-soft:#eeecfb;--brand-secondary:#00a9d6;--brand-accent:#e33a8b;--brand-sidebar:#0b0d13;--brand-sidebar-hover:#232330;--brand-line:linear-gradient(90deg,#00b7db 0 25%,#6254c7 25% 50%,#e33a8b 50% 75%,#f2bf18 75% 100%)}
+
+.shell aside{background:var(--brand-sidebar)}
+.shell .brand>span{background:linear-gradient(135deg,var(--brand-primary),var(--brand-secondary))}
+.shell nav a:hover,.shell nav a.active{background:var(--brand-sidebar-hover)}
+.shell nav a{color:#91a0b3}.shell nav a:hover,.shell nav a.active{color:#fff}
+.shell nav a.active{box-shadow:inset 3px 0 var(--brand-primary)}
+.shell nav a:after{background:var(--brand-line)}
+.shell main{background:linear-gradient(180deg,color-mix(in srgb,var(--brand-primary-soft) 34%,#f5f7fb) 0,#f5f7fb 230px)}
+.shell main>header{position:relative}
+.shell main>header:after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--brand-line);opacity:.88;pointer-events:none}
+.shell .company-logo{background:var(--brand-primary-soft);color:var(--brand-primary-dark);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--brand-primary) 12%,transparent)}
+.shell .company-logo.has-image{background:#fff;padding:3px;overflow:hidden}.shell .company-logo img{display:block;width:100%;height:100%;object-fit:contain;border-radius:7px}
+.shell .avatar{background:color-mix(in srgb,var(--brand-secondary) 13%,#fff);color:var(--brand-secondary)}
+.shell .page-title>div>span,.shell .welcome>div>span{color:var(--brand-primary)}
+.shell .primary{background:var(--brand-primary)!important}
+.shell .primary:hover:not(:disabled){box-shadow:0 9px 22px color-mix(in srgb,var(--brand-primary) 28%,transparent)}
+.shell a,.shell .panel a{color:var(--brand-primary-dark)}
+.shell .notify i{background:var(--brand-secondary)}
+.shell .secure svg{color:var(--brand-primary)}
+.shell .collapse-nav{border-color:#ffffff19;background:color-mix(in srgb,var(--brand-primary) 18%,#10213a);color:#b7c4d5}
+
+.shell :is(.management-tabs,.sst-tabs,.status-tabs) button.active{background:var(--brand-primary)!important;border-color:var(--brand-primary)!important;color:#fff!important}
+.shell :is(.management-tabs,.sst-tabs,.status-tabs) button:hover:not(.active){border-color:color-mix(in srgb,var(--brand-primary) 45%,#dce3eb);color:var(--brand-primary-dark)}
+.shell :is(.manager-badge,.signature-confirm-button.confirmed,.signature-confirm-operix:has(input:checked),.stock-ok){background:var(--brand-primary-soft);color:var(--brand-primary-dark);border-color:color-mix(in srgb,var(--brand-primary) 36%,#dce3eb)}
+.shell :is(.pending-count,.stock-low){background:color-mix(in srgb,var(--brand-accent) 16%,#fff);color:color-mix(in srgb,var(--brand-accent) 62%,#473400)}
+.shell :is(.company-logo,.manager-badge,.epi-item-icon,.content-library>article>span,.service-actions>button>svg){transition:background-color .32s var(--motion-soft),color .32s var(--motion-soft),box-shadow .32s var(--motion-soft)}
+
+.shell input:focus,.shell select:focus,.shell textarea:focus{border-color:color-mix(in srgb,var(--brand-primary) 65%,#fff)!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--brand-primary) 10%,transparent)}
+.shell label:focus-within{color:var(--brand-primary-dark)}
+.shell input[type=checkbox],.shell input[type=radio]{accent-color:var(--brand-primary)}
+.shell .access-row label input:checked+span{background:var(--brand-primary);border-color:var(--brand-primary)}
+
+.shell .safety-feature.epi-feature>div,.shell .epi-item-icon,.shell .stock-history>article>span.entry{background:var(--brand-primary-soft);color:var(--brand-primary)}
+.shell .safety-feature:nth-child(2)>div{background:color-mix(in srgb,var(--brand-secondary) 10%,#fff);color:var(--brand-secondary)}
+.shell .safety-feature:nth-child(3)>div{background:color-mix(in srgb,var(--brand-accent) 13%,#fff);color:color-mix(in srgb,var(--brand-accent) 72%,#4b3300)}
+.shell .request-status-dashboard article i,.shell .rating-line i{background:var(--brand-primary)}
+.shell .inventory-metrics article>svg,.shell .content-head>svg{color:var(--brand-primary)}
+.shell .epi-catalog article.selected{border-color:var(--brand-primary);background:var(--brand-primary-soft)}
+.shell .epi-catalog-tools button.active{background:var(--brand-primary);border-color:var(--brand-primary)}
+
+.shell.theme-grafmarques .brand>span{background:conic-gradient(from 35deg,#db1a8b,#f4bd07,#00ed99,#25a5d0,#db1a8b);color:#090b0e;box-shadow:0 0 0 3px #ffffff14}
+.shell.theme-grafmarques .system-title:after{content:' · Grafmarques';color:#db1a8b;font-size:9px;font-weight:700}
+.shell.theme-infinni .brand>span{background:linear-gradient(135deg,#00b05a,#00b8f5)}
+.shell.theme-infinni .system-title:after{content:' · INFINNI';color:#00a858;font-size:9px;font-weight:700}
+.shell.theme-mprint .brand>span{background:conic-gradient(from 25deg,#00b7db,#6254c7,#e33a8b,#f2bf18,#00b7db);color:#fff;box-shadow:0 0 0 3px #ffffff14}
+.shell.theme-mprint .system-title:after{content:' · M.Print';color:#6254c7;font-size:9px;font-weight:700}
+
+@media(prefers-contrast:more){.shell{--brand-primary-dark:#064d42}.shell.theme-grafmarques{--brand-primary-dark:#084d63}.shell.theme-infinni{--brand-primary-dark:#006536}.shell.theme-mprint{--brand-primary-dark:#392982}}

@@ -1,0 +1,50 @@
+/* Motion language inspired by Casa Boutique RC: calm reveals and tactile details.
+   Layout, sizing and component structure intentionally remain untouched. */
+:root{--motion-ease:cubic-bezier(.22,1,.36,1);--motion-soft:cubic-bezier(.4,0,.2,1)}
+
+@keyframes operix-page-reveal{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes operix-panel-reveal{from{opacity:0;transform:translateY(8px) scale(.995)}to{opacity:1;transform:none}}
+@keyframes operix-modal-backdrop{from{opacity:0}to{opacity:1}}
+@keyframes operix-modal-reveal{from{opacity:0;transform:translateY(18px) scale(.975)}to{opacity:1;transform:none}}
+@keyframes operix-tab-mark{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes operix-toast-reveal{from{opacity:0;transform:translateY(-8px) scale(.98)}to{opacity:1;transform:none}}
+
+.content.page-enter,.content:not(.page-enter){animation:operix-page-reveal .42s var(--motion-ease) both}
+.content>.page-title{animation:operix-panel-reveal .38s var(--motion-ease) .03s both}
+.content>:is(.metric-grid,.cards,.charts-grid,.safety-grid-v3,.service-actions,.management-tabs,.sst-tabs,.admin-shell,.orders-layout,.queue-layout,.inventory-st,.safety-content-grid,.panel){animation:operix-panel-reveal .44s var(--motion-ease) .08s both}
+.content>:is(.charts-grid,.safety-content-grid,.inventory-st,.dash-lower){animation-delay:.13s}
+
+.panel,.safety-feature,.metric-grid>article,.inventory-metrics>article,.schedule-grid>article,.service-actions>button,.quick>button{transition:transform .32s var(--motion-ease),box-shadow .32s var(--motion-ease),border-color .25s var(--motion-soft),background-color .25s var(--motion-soft)}
+.panel:hover,.inventory-metrics>article:hover{border-color:#d8e3e8;box-shadow:0 12px 34px rgba(19,43,65,.065)}
+.safety-feature:hover,.metric-grid>article:hover,.schedule-grid>article:hover,.service-actions>button:hover,.quick>button:hover{transform:translateY(-3px);box-shadow:0 14px 36px rgba(18,43,67,.085)}
+
+button,a,nav a{transition:color .22s var(--motion-soft),background-color .22s var(--motion-soft),border-color .22s var(--motion-soft),box-shadow .22s var(--motion-soft),transform .22s var(--motion-ease),opacity .22s var(--motion-soft)}
+button:hover:not(:disabled){transform:translateY(-1px)}
+button:active:not(:disabled){transform:translateY(0) scale(.975);transition-duration:.08s}
+.primary:hover:not(:disabled){box-shadow:0 9px 22px rgba(13,156,137,.22);filter:saturate(1.04)}
+nav a{position:relative;overflow:hidden}
+nav a:after{content:'';position:absolute;left:0;bottom:0;width:100%;height:2px;background:#27c2a7;transform:scaleX(0);transform-origin:left;transition:transform .32s var(--motion-ease)}
+nav a:hover:after,nav a.active:after{transform:scaleX(1)}
+
+.management-tabs button,.sst-tabs button,.status-tabs button,.epi-catalog-tools button{position:relative;isolation:isolate}
+.management-tabs button.active,.sst-tabs button.active,.status-tabs button.active,.epi-catalog-tools button.active{animation:operix-tab-mark .34s var(--motion-ease)}
+
+.overlay,.v2-overlay{animation:operix-modal-backdrop .24s ease-out both;backdrop-filter:blur(3px)}
+.modal,.v2-modal{animation:operix-modal-reveal .34s var(--motion-ease) both;transform-origin:50% 45%}
+.modal>*{animation:operix-panel-reveal .34s var(--motion-ease) .06s both}
+.modal>*:nth-child(3){animation-delay:.1s}.modal>*:nth-child(4){animation-delay:.14s}
+
+input,select,textarea,.signature-canvas-operix{transition:border-color .22s var(--motion-soft),box-shadow .22s var(--motion-soft),background-color .22s var(--motion-soft)}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#58b8a9!important;box-shadow:0 0 0 4px rgba(13,156,137,.09)}
+label:focus-within{color:#0b806f}
+
+.people-row,.inventory-row,.content-library>article,.my-epi-requests>article,.stock-history>article,.order-list>button,.queue>button,.maintenance-list>article{transition:background-color .22s var(--motion-soft),transform .25s var(--motion-ease),border-color .22s var(--motion-soft)}
+.people-row:hover,.inventory-row:not(.head):hover,.content-library>article:hover,.my-epi-requests>article:hover,.stock-history>article:hover,.maintenance-list>article:hover{background-color:#f7fbfa;transform:translateX(2px)}
+
+.photo-field img,.upload-card img,.epi-item-icon img,.person-photo{transition:transform .55s var(--motion-ease),filter .35s ease}
+.photo-field:hover img,.upload-card:hover img,.epi-catalog article:hover .epi-item-icon img{transform:scale(1.035);filter:saturate(1.04)}
+.toast-inline{animation:operix-toast-reveal .34s var(--motion-ease) both}
+.manager-badge,.pending-count,.epi-status,.stock-low,.stock-ok{transition:transform .25s var(--motion-ease),box-shadow .25s ease}
+.manager-badge:hover,.pending-count:hover,.epi-status:hover,.stock-low:hover,.stock-ok:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(18,43,67,.08)}
+
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0ms!important}}

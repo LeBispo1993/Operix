@@ -1,0 +1,17 @@
+/* Correções finais de contraste para componentes originalmente claros. */
+html[data-theme=dark] :is(.status-checkboxes label,.status-tabs button,.management-tabs button){background:#172231!important;border-color:#405069!important;color:#c7d3e2!important}
+html[data-theme=dark] :is(.status-checkboxes label,.status-tabs button,.management-tabs button):hover{background:#1d2b3d!important;color:#f4f7fb!important}
+html[data-theme=dark] .status-checkboxes input{accent-color:var(--brand-primary,#18b39a)}
+html[data-theme=dark] :is(.checklist-box,.materials-box){background:#121d2b!important;border-color:#344259!important;color:#e8eef6!important}
+html[data-theme=dark] :is(.checklist-box,.materials-box) :is(h2,h3,label){color:#e8eef6!important}
+html[data-theme=dark] .materials-box p{color:#aebacc!important}
+html[data-theme=dark] .materials-box button{background:#172536!important;border-color:#405069!important;color:#dce6f2!important}
+html[data-theme=dark] :is(.date-filters,.modal-order-list button){background:#172231!important;border-color:#405069!important;color:#dce6f2!important}
+html[data-theme=dark] .big-donut>div{background:#172231!important;color:#eef4fb!important}
+html[data-theme=dark] .big-donut>div :is(b,small){color:#eef4fb!important}
+html[data-theme=dark] .rating-line{background:#172231!important;color:#dce6f2!important}
+html[data-theme=dark] .rating-line>div{background:#344259!important}
+html[data-theme=dark] .rating-line :is(span,b){color:#dce6f2!important}
+html[data-theme=dark] :is(.safety-feature,.safety-grid article) button:not(.primary),html[data-theme=dark] .content-library>article button{background:#172536!important;border-color:#405069!important;color:#dce6f2!important}
+html[data-theme=dark] .content-library>article{border-color:#344259!important}
+html[data-theme=dark] .content-library>article>span{background:#172b43!important;color:#79a6ff!important}

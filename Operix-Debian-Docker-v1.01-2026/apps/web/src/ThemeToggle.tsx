@@ -1,0 +1,3 @@
+import React,{useEffect,useState}from'react';import{Moon,Sun}from'lucide-react';
+type Theme='light'|'dark';
+export default function ThemeToggle(){const[theme,setTheme]=useState<Theme>(()=>(localStorage.getItem('operix.theme')as Theme)||'light');useEffect(()=>{document.documentElement.dataset.theme=theme;localStorage.setItem('operix.theme',theme)},[theme]);const dark=theme==='dark';return <button type="button" className="theme-toggle" aria-label={dark?'Ativar modo claro':'Ativar modo escuro'} title={dark?'Modo claro':'Modo escuro'} onClick={()=>setTheme(dark?'light':'dark')}>{dark?<Sun/>:<Moon/>}</button>}

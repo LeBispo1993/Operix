@@ -1,0 +1,19 @@
+.shell>main>header{justify-content:flex-start;gap:14px}
+.shell .company-logo{width:48px;height:48px;flex:0 0 48px;border-radius:12px;margin-right:4px}
+.shell header>.company{min-width:190px;margin-right:24px}
+.shell header>.company select{font-size:16px;padding-right:32px;max-width:180px}
+.shell .system-title{margin-left:auto;margin-right:auto}
+.role-switch{min-width:190px;margin-left:0}
+.role-switch .role-value{display:block;margin-top:3px;color:#17304f;font-size:16px;font-weight:800;line-height:1.15}
+.login-brand>.login-security{display:flex;gap:11px;align-items:center;margin-top:44px}
+.login-brand>.login-security>svg{color:#4bd3c1}
+.login-brand>.login-security span,.login-brand>.login-security b,.login-brand>.login-security small{display:block}
+.login-brand>.login-security small{font-size:10px;color:#a6b7ca;margin-top:3px}
+.login-brand>.login-copyright{position:static;margin-top:14px;color:#d6dfeb;font-size:14px;line-height:1.4;letter-spacing:.1px;font-weight:500}
+.login-brand>.login-copyright span{font-size:14px;margin-right:4px}
+.login-demo{display:none!important}
+.order-admin-delete{border:1px solid #efc3ca!important;background:#fff5f6!important;color:#c73d52!important}
+.order-admin-delete svg{width:16px}
+.empty-order-list{padding:32px 16px;text-align:center;color:#7f8b9d;font-size:12px}
+@media(max-width:900px){.shell header>.company{min-width:150px;margin-right:8px}.role-switch{min-width:140px}.role-switch .role-value{font-size:13px}}
+@media(max-width:850px){.login-brand>.login-security{display:flex}.login-brand>.login-copyright{font-size:12px;margin-top:10px}}

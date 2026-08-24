@@ -1,0 +1,4 @@
+import React from'react';
+import{AlertTriangle,RefreshCw}from'lucide-react';
+type Props={name:string;children:React.ReactNode};type State={error:Error|null};
+export default class ModuleErrorBoundary extends React.Component<Props,State>{state:State={error:null};static getDerivedStateFromError(error:Error){return{error}}componentDidCatch(error:Error,info:React.ErrorInfo){console.error(`[Operix] Falha no módulo ${this.props.name}`,error,info)}render(){if(!this.state.error)return this.props.children;return <section className="content page-enter"><div className="panel module-error-panel"><AlertTriangle/><div><span>FALHA ISOLADA NO MÓDULO</span><h1>Não foi possível abrir {this.props.name}</h1><p>{this.state.error.message}</p><button className="primary" onClick={()=>this.setState({error:null})}><RefreshCw/>Tentar novamente</button></div></div></section>}}

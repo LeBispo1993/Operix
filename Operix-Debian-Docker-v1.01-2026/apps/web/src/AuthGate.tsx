@@ -1,0 +1,411 @@
+import React,{useEffect,useState}from'react';
+import{Eye,EyeOff,KeyRound,Lock,LogIn,ShieldCheck,User}from'lucide-react';
+import{apiRoleLabel}from'./api';
+
+type Membership={
+  tenantId:string;
+  tenantName:string;
+  role:string;
+  sectorId:string|null;
+};
+
+type LoginResponse={
+  accessToken:string;
+  refreshToken:string;
+  user:{
+    name:string;
+    mustChangePassword:boolean;
+  };
+  memberships:Membership[];
+};
+
+function NormalizedLogo({src,alt}:{src:string;alt:string}){
+  const[image,setImage]=useState(src);
+
+  useEffect(()=>{
+    const source=new Image();
+
+    source.onload=()=>{
+      const canvas=document.createElement('canvas');
+      const context=canvas.getContext('2d',{willReadFrequently:true});
+      if(!context)return;
+
+      canvas.width=source.naturalWidth;
+      canvas.height=source.naturalHeight;
+      context.drawImage(source,0,0);
+
+      const pixels=context.getImageData(
+        0,0,canvas.width,canvas.height
+      ).data;
+
+      let left=canvas.width,top=canvas.height,right=0,bottom=0;
+
+      for(let y=0;y<canvas.height;y++){
+        for(let x=0;x<canvas.width;x++){
+          const i=(y*canvas.width+x)*4;
+          const r=pixels[i];
+          const g=pixels[i+1];
+          const b=pixels[i+2];
+          const a=pixels[i+3];
+
+          if(a>20&&(r<242||g<242||b<242)){
+            left=Math.min(left,x);
+            right=Math.max(right,x);
+            top=Math.min(top,y);
+            bottom=Math.max(bottom,y);
+          }
+        }
+      }
+
+      if(right<=left||bottom<=top)return;
+
+      const padding=Math.max(
+        3,
+        Math.round(Math.max(right-left,bottom-top)*.04)
+      );
+
+      const sx=Math.max(0,left-padding);
+      const sy=Math.max(0,top-padding);
+      const width=Math.min(
+        canvas.width-sx,
+        right-left+padding*2
+      );
+      const height=Math.min(
+        canvas.height-sy,
+        bottom-top+padding*2
+      );
+
+      const trimmed=document.createElement('canvas');
+      trimmed.width=width;
+      trimmed.height=height;
+
+      trimmed.getContext('2d')!.drawImage(
+        source,
+        sx,sy,width,height,
+        0,0,width,height
+      );
+
+      setImage(trimmed.toDataURL('image/png'));
+    };
+
+    source.src=src;
+  },[src]);
+
+  return <img src={image} alt={alt}/>;
+}
+
+function Logos(){
+ const companies=['Grafmarques','INFINNI','M.Print'];
+
+ const[logos,setLogos]=useState<Record<string,string>>({});
+
+ useEffect(()=>{
+  let cancelled=false;
+
+  fetch('/api/branding')
+   .then(response=>{
+    if(!response.ok)
+     throw new Error('Falha ao carregar identidade visual');
+
+    return response.json();
+   })
+   .then((rows:{name:string;logoData:string}[])=>{
+    if(cancelled)return;
+
+    setLogos(
+     Object.fromEntries(
+      rows.map(row=>[
+       row.name,
+       row.logoData||''
+      ])
+     )
+    );
+   })
+   .catch(error=>console.error(error));
+
+  return()=>{
+   cancelled=true;
+  };
+ },[]);
+
+ return(
+  <div className="login-logo-rail">
+   <div>
+    {[...companies,...companies].map((company,index)=>{
+     const logo=logos[company]||'';
+
+     return(
+      <span key={`${company}-${index}`}>
+       {logo
+        ?<NormalizedLogo
+          src={logo}
+          alt={`Logo ${company}`}
+         />
+        :<b>{company}</b>
+       }
+      </span>
+     );
+    })}
+   </div>
+  </div>
+ );
+}
+
+function saveSession(data:LoginResponse){
+  const membership=data.memberships[0];
+
+  sessionStorage.setItem(
+    'operix.accessToken',
+    data.accessToken
+  );
+
+  sessionStorage.setItem(
+    'operix.refreshToken',
+    data.refreshToken
+  );
+
+  sessionStorage.setItem(
+    'operix.memberships',
+    JSON.stringify(data.memberships)
+  );
+
+  sessionStorage.setItem(
+    'operix.auth.user',
+    JSON.stringify({
+      name:data.user.name,
+      username:'',
+      role:apiRoleLabel(membership?.role||''),
+      company:membership?.tenantName||'',
+      tenantId:membership?.tenantId||'',
+      sectorId:membership?.sectorId||null,
+      mustChange:data.user.mustChangePassword
+    })
+  );
+
+  sessionStorage.setItem(
+    'operix.authenticated',
+    'true'
+  );
+}
+
+function clearSession(){
+  sessionStorage.removeItem('operix.accessToken');
+  sessionStorage.removeItem('operix.refreshToken');
+  sessionStorage.removeItem('operix.memberships');
+  sessionStorage.removeItem('operix.auth.user');
+  sessionStorage.removeItem('operix.authenticated');
+}
+
+export default function AuthGate({
+  children
+}:{
+  children:React.ReactNode
+}){
+  const[authenticated,setAuthenticated]=useState(
+    ()=>sessionStorage.getItem('operix.authenticated')==='true'
+  );
+
+  const[error,setError]=useState('');
+  const[show,setShow]=useState(false);
+  const[loading,setLoading]=useState(false);
+
+  useEffect(()=>{
+    const logout=()=>{
+      clearSession();
+      setAuthenticated(false);
+    };
+
+    window.addEventListener('operix-logout',logout);
+
+    return()=>{
+      window.removeEventListener('operix-logout',logout);
+    };
+  },[]);
+
+  if(authenticated){
+    return <>{children}</>;
+  }
+
+  const login=async(
+    event:React.FormEvent<HTMLFormElement>
+  )=>{
+    event.preventDefault();
+
+    setError('');
+    setLoading(true);
+
+    try{
+      const data=new FormData(event.currentTarget);
+
+      const email=String(
+        data.get('username')||''
+      ).trim();
+
+      const password=String(
+        data.get('password')||''
+      );
+
+      const response=await fetch('/api/auth/login',{
+        method:'POST',
+        headers:{
+          'Content-Type':'application/json'
+        },
+        body:JSON.stringify({
+          email,
+          password
+        })
+      });
+
+      const result=await response.json();
+
+      if(!response.ok){
+        setError(
+          result?.error||
+          'Não foi possível realizar o login.'
+        );
+        return;
+      }
+
+      if(
+        !result.accessToken||
+        !result.refreshToken||
+        !Array.isArray(result.memberships)||
+        result.memberships.length===0
+      ){
+        setError(
+          'A conta não possui acesso a nenhuma empresa.'
+        );
+        return;
+      }
+
+      saveSession(result as LoginResponse);
+      setAuthenticated(true);
+
+    }catch(error){
+      console.error(error);
+
+      setError(
+        'Não foi possível conectar ao servidor.'
+      );
+
+    }finally{
+      setLoading(false);
+    }
+  };
+
+  return(
+    <main className="login-page">
+
+      <section className="login-brand">
+
+        <span>GESTÃO OPERACIONAL</span>
+
+        <h1>
+          {localStorage.getItem('operix.system.name')||'OPERIX'}
+        </h1>
+
+        <p>
+          Informação, segurança e produtividade em um único ambiente.
+        </p>
+
+        <Logos/>
+
+        <div className="login-security">
+          <ShieldCheck/>
+          <span>
+            <b>Ambiente protegido</b>
+            <small>
+              Acesso individual e controlado
+            </small>
+          </span>
+        </div>
+
+        <footer className="login-copyright">
+          <span>®</span>
+          Todos os direitos reservados Audo Bispo - v1.01-2026
+        </footer>
+
+      </section>
+
+      <section className="login-panel">
+
+        <form onSubmit={login}>
+
+          <div className="login-symbol">
+            <Lock/>
+          </div>
+
+          <span>BEM-VINDO</span>
+
+          <h2>Acesse sua conta</h2>
+
+          <p>
+            Informe seu e-mail e sua senha para entrar no sistema.
+          </p>
+
+          {error&&(
+            <div className="login-error">
+              {error}
+            </div>
+          )}
+
+          <label>
+            E-mail
+
+            <div>
+              <User/>
+
+              <input
+                name="username"
+                type="email"
+                autoComplete="username"
+                placeholder="seuemail@empresa.com"
+                required
+                autoFocus
+              />
+            </div>
+          </label>
+
+          <label>
+            Senha
+
+            <div>
+              <KeyRound/>
+
+              <input
+                name="password"
+                type={show?'text':'password'}
+                autoComplete="current-password"
+                required
+              />
+
+              <button
+                type="button"
+                onClick={()=>setShow(!show)}
+              >
+                {show?<EyeOff/>:<Eye/>}
+              </button>
+
+            </div>
+          </label>
+
+          <button
+            className="login-submit"
+            disabled={loading}
+          >
+            <LogIn/>
+
+            {loading
+              ?'Entrando...'
+              :'Entrar no sistema'
+            }
+
+          </button>
+
+        </form>
+
+      </section>
+
+    </main>
+  );
+}

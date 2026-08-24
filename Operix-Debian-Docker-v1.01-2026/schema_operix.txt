@@ -1,0 +1,301 @@
+          table_name          |          column_name           |        data_type         | is_nullable |             column_default             
+------------------------------+--------------------------------+--------------------------+-------------+----------------------------------------
+ announcements                | id                             | uuid                     | NO          | gen_random_uuid()
+ announcements                | tenant_id                      | uuid                     | YES         | 
+ announcements                | title                          | text                     | NO          | 
+ announcements                | message                        | text                     | NO          | 
+ announcements                | audience_roles                 | ARRAY                    | YES         | 
+ announcements                | starts_at                      | timestamp with time zone | NO          | now()
+ announcements                | ends_at                        | timestamp with time zone | YES         | 
+ announcements                | active                         | boolean                  | NO          | true
+ assets                       | id                             | uuid                     | NO          | gen_random_uuid()
+ assets                       | tenant_id                      | uuid                     | NO          | 
+ assets                       | sector_id                      | uuid                     | YES         | 
+ assets                       | tag                            | text                     | NO          | 
+ assets                       | name                           | text                     | NO          | 
+ assets                       | category                       | text                     | NO          | 
+ assets                       | serial_number                  | text                     | YES         | 
+ assets                       | status                         | text                     | NO          | 'ACTIVE'::text
+ assets                       | purchase_date                  | date                     | YES         | 
+ assets                       | warranty_until                 | date                     | YES         | 
+ assets                       | metadata                       | jsonb                    | NO          | '{}'::jsonb
+ attachments                  | id                             | uuid                     | NO          | gen_random_uuid()
+ attachments                  | tenant_id                      | uuid                     | NO          | 
+ attachments                  | entity_type                    | text                     | NO          | 
+ attachments                  | entity_id                      | uuid                     | NO          | 
+ attachments                  | storage_key                    | text                     | NO          | 
+ attachments                  | file_name                      | text                     | NO          | 
+ attachments                  | mime_type                      | text                     | NO          | 
+ attachments                  | size_bytes                     | bigint                   | NO          | 
+ attachments                  | sha256                         | text                     | NO          | 
+ attachments                  | created_at                     | timestamp with time zone | NO          | now()
+ audit_logs                   | id                             | bigint                   | NO          | nextval('audit_logs_id_seq'::regclass)
+ audit_logs                   | tenant_id                      | uuid                     | YES         | 
+ audit_logs                   | actor_user_id                  | uuid                     | YES         | 
+ audit_logs                   | action                         | text                     | NO          | 
+ audit_logs                   | entity_type                    | text                     | NO          | 
+ audit_logs                   | entity_id                      | text                     | YES         | 
+ audit_logs                   | ip                             | inet                     | YES         | 
+ audit_logs                   | details                        | jsonb                    | NO          | '{}'::jsonb
+ audit_logs                   | created_at                     | timestamp with time zone | NO          | now()
+ checklists                   | id                             | uuid                     | NO          | gen_random_uuid()
+ checklists                   | tenant_id                      | uuid                     | NO          | 
+ checklists                   | name                           | text                     | NO          | 
+ checklists                   | module                         | text                     | NO          | 
+ checklists                   | version                        | integer                  | NO          | 1
+ checklists                   | definition                     | jsonb                    | NO          | 
+ checklists                   | active                         | boolean                  | NO          | true
+ epi_deliveries               | id                             | uuid                     | NO          | gen_random_uuid()
+ epi_deliveries               | tenant_id                      | uuid                     | NO          | 
+ epi_deliveries               | request_id                     | uuid                     | YES         | 
+ epi_deliveries               | person_id                      | uuid                     | NO          | 
+ epi_deliveries               | item_id                        | uuid                     | NO          | 
+ epi_deliveries               | quantity                       | numeric                  | NO          | 
+ epi_deliveries               | delivered_at                   | timestamp with time zone | NO          | now()
+ epi_deliveries               | certificate_number             | text                     | YES         | 
+ epi_deliveries               | signature_key                  | text                     | YES         | 
+ epi_deliveries               | replacement_due                | date                     | YES         | 
+ epi_request_items            | id                             | uuid                     | NO          | gen_random_uuid()
+ epi_request_items            | tenant_id                      | uuid                     | NO          | 
+ epi_request_items            | request_id                     | uuid                     | NO          | 
+ epi_request_items            | item_id                        | uuid                     | NO          | 
+ epi_request_items            | quantity                       | numeric                  | NO          | 
+ epi_requests                 | id                             | uuid                     | NO          | gen_random_uuid()
+ epi_requests                 | tenant_id                      | uuid                     | NO          | 
+ epi_requests                 | requester_id                   | uuid                     | NO          | 
+ epi_requests                 | number                         | bigint                   | NO          | 
+ epi_requests                 | request_type                   | text                     | NO          | 
+ epi_requests                 | reason                         | text                     | NO          | 
+ epi_requests                 | status                         | text                     | NO          | 'PENDING'::text
+ epi_requests                 | requested_at                   | timestamp with time zone | NO          | now()
+ epi_requests                 | separated_by                   | uuid                     | YES         | 
+ epi_requests                 | delivered_at                   | timestamp with time zone | YES         | 
+ epi_requests                 | delivery_photo_key             | text                     | YES         | 
+ epi_requests                 | technician_signature_key       | text                     | YES         | 
+ epi_requests                 | employee_signature_key         | text                     | YES         | 
+ epi_requests                 | technician_signature_confirmed | boolean                  | NO          | false
+ epi_requests                 | employee_signature_confirmed   | boolean                  | NO          | false
+ epi_requests                 | notes                          | text                     | YES         | 
+ equipment_types              | id                             | uuid                     | NO          | gen_random_uuid()
+ equipment_types              | tenant_id                      | uuid                     | NO          | 
+ equipment_types              | name                           | text                     | NO          | 
+ equipment_types              | fields_schema                  | jsonb                    | NO          | '{}'::jsonb
+ equipment_types              | active                         | boolean                  | NO          | true
+ items                        | id                             | uuid                     | NO          | gen_random_uuid()
+ items                        | tenant_id                      | uuid                     | NO          | 
+ items                        | sku                            | text                     | NO          | 
+ items                        | name                           | text                     | NO          | 
+ items                        | unit                           | text                     | NO          | 
+ items                        | category                       | text                     | NO          | 
+ items                        | ca_number                      | text                     | YES         | 
+ items                        | image_key                      | text                     | YES         | 
+ items                        | min_stock                      | numeric                  | NO          | 0
+ items                        | active                         | boolean                  | NO          | true
+ maintenance_plans            | id                             | uuid                     | NO          | gen_random_uuid()
+ maintenance_plans            | tenant_id                      | uuid                     | NO          | 
+ maintenance_plans            | asset_id                       | uuid                     | NO          | 
+ maintenance_plans            | kind                           | USER-DEFINED             | NO          | 
+ maintenance_plans            | frequency_days                 | integer                  | YES         | 
+ maintenance_plans            | meter_interval                 | numeric                  | YES         | 
+ maintenance_plans            | next_due_at                    | timestamp with time zone | YES         | 
+ maintenance_plans            | active                         | boolean                  | NO          | true
+ maintenance_schedules        | id                             | uuid                     | NO          | gen_random_uuid()
+ maintenance_schedules        | tenant_id                      | uuid                     | NO          | 
+ maintenance_schedules        | asset_id                       | uuid                     | YES         | 
+ maintenance_schedules        | sector_id                      | uuid                     | YES         | 
+ maintenance_schedules        | checklist_id                   | uuid                     | YES         | 
+ maintenance_schedules        | priority_id                    | uuid                     | YES         | 
+ maintenance_schedules        | name                           | text                     | NO          | 
+ maintenance_schedules        | periodicity                    | text                     | NO          | 
+ maintenance_schedules        | next_date                      | date                     | NO          | 
+ maintenance_schedules        | active                         | boolean                  | NO          | true
+ memberships                  | id                             | uuid                     | NO          | gen_random_uuid()
+ memberships                  | user_id                        | uuid                     | NO          | 
+ memberships                  | tenant_id                      | uuid                     | NO          | 
+ memberships                  | sector_id                      | uuid                     | YES         | 
+ memberships                  | role                           | USER-DEFINED             | NO          | 
+ memberships                  | active                         | boolean                  | NO          | true
+ notifications                | id                             | uuid                     | NO          | gen_random_uuid()
+ notifications                | tenant_id                      | uuid                     | NO          | 
+ notifications                | user_id                        | uuid                     | NO          | 
+ notifications                | type                           | text                     | NO          | 
+ notifications                | title                          | text                     | NO          | 
+ notifications                | message                        | text                     | NO          | 
+ notifications                | entity_type                    | text                     | YES         | 
+ notifications                | entity_id                      | uuid                     | YES         | 
+ notifications                | read_at                        | timestamp with time zone | YES         | 
+ notifications                | created_at                     | timestamp with time zone | NO          | now()
+ people                       | id                             | uuid                     | NO          | gen_random_uuid()
+ people                       | tenant_id                      | uuid                     | NO          | 
+ people                       | sector_id                      | uuid                     | YES         | 
+ people                       | full_name                      | text                     | NO          | 
+ people                       | document                       | text                     | NO          | 
+ people                       | email                          | text                     | YES         | 
+ people                       | phone                          | text                     | YES         | 
+ people                       | photo_key                      | text                     | YES         | 
+ people                       | signature_key                  | text                     | YES         | 
+ people                       | active                         | boolean                  | NO          | true
+ people                       | created_at                     | timestamp with time zone | NO          | now()
+ people                       | extension                      | text                     | YES         | 
+ priorities                   | id                             | uuid                     | NO          | gen_random_uuid()
+ priorities                   | tenant_id                      | uuid                     | NO          | 
+ priorities                   | level                          | USER-DEFINED             | NO          | 
+ priorities                   | name                           | text                     | NO          | 
+ priorities                   | response_minutes               | integer                  | NO          | 
+ priorities                   | resolution_minutes             | integer                  | NO          | 
+ purchase_requests            | id                             | uuid                     | NO          | gen_random_uuid()
+ purchase_requests            | tenant_id                      | uuid                     | NO          | 
+ purchase_requests            | requester_id                   | uuid                     | NO          | 
+ purchase_requests            | sector_id                      | uuid                     | YES         | 
+ purchase_requests            | number                         | bigint                   | NO          | 
+ purchase_requests            | status                         | text                     | NO          | 'DRAFT'::text
+ purchase_requests            | justification                  | text                     | NO          | 
+ purchase_requests            | estimated_total                | numeric                  | YES         | 
+ purchase_requests            | created_at                     | timestamp with time zone | NO          | now()
+ refresh_tokens               | id                             | uuid                     | NO          | gen_random_uuid()
+ refresh_tokens               | user_id                        | uuid                     | NO          | 
+ refresh_tokens               | token_hash                     | text                     | NO          | 
+ refresh_tokens               | expires_at                     | timestamp with time zone | NO          | 
+ refresh_tokens               | revoked_at                     | timestamp with time zone | YES         | 
+ refresh_tokens               | created_at                     | timestamp with time zone | NO          | now()
+ role_permissions             | id                             | uuid                     | NO          | gen_random_uuid()
+ role_permissions             | tenant_id                      | uuid                     | NO          | 
+ role_permissions             | role                           | USER-DEFINED             | NO          | 
+ role_permissions             | module                         | text                     | NO          | 
+ role_permissions             | can_view                       | boolean                  | NO          | false
+ role_permissions             | can_create                     | boolean                  | NO          | false
+ role_permissions             | can_edit                       | boolean                  | NO          | false
+ role_permissions             | can_delete                     | boolean                  | NO          | false
+ sectors                      | id                             | uuid                     | NO          | gen_random_uuid()
+ sectors                      | tenant_id                      | uuid                     | NO          | 
+ sectors                      | name                           | text                     | NO          | 
+ sectors                      | cost_center                    | text                     | YES         | 
+ sectors                      | active                         | boolean                  | NO          | true
+ sectors                      | parent_id                      | uuid                     | YES         | 
+ service_types                | id                             | uuid                     | NO          | gen_random_uuid()
+ service_types                | tenant_id                      | uuid                     | NO          | 
+ service_types                | name                           | text                     | NO          | 
+ service_types                | description                    | text                     | YES         | 
+ service_types                | active                         | boolean                  | NO          | true
+ stock_movements              | id                             | uuid                     | NO          | gen_random_uuid()
+ stock_movements              | tenant_id                      | uuid                     | NO          | 
+ stock_movements              | warehouse_id                   | uuid                     | NO          | 
+ stock_movements              | item_id                        | uuid                     | NO          | 
+ stock_movements              | work_order_id                  | uuid                     | YES         | 
+ stock_movements              | movement_type                  | text                     | NO          | 
+ stock_movements              | quantity                       | numeric                  | NO          | 
+ stock_movements              | unit_cost                      | numeric                  | YES         | 
+ stock_movements              | occurred_at                    | timestamp with time zone | NO          | now()
+ tenant_themes                | tenant_id                      | uuid                     | NO          | 
+ tenant_themes                | primary_color                  | text                     | NO          | '#0d9c89'::text
+ tenant_themes                | nav_color                      | text                     | NO          | '#0d1f3c'::text
+ tenant_themes                | updated_at                     | timestamp with time zone | NO          | now()
+ tenants                      | id                             | uuid                     | NO          | gen_random_uuid()
+ tenants                      | code                           | text                     | NO          | 
+ tenants                      | name                           | text                     | NO          | 
+ tenants                      | active                         | boolean                  | NO          | true
+ tenants                      | created_at                     | timestamp with time zone | NO          | now()
+ tickets                      | id                             | uuid                     | NO          | gen_random_uuid()
+ tickets                      | tenant_id                      | uuid                     | NO          | 
+ tickets                      | sector_id                      | uuid                     | YES         | 
+ tickets                      | requester_id                   | uuid                     | NO          | 
+ tickets                      | assignee_id                    | uuid                     | YES         | 
+ tickets                      | asset_id                       | uuid                     | YES         | 
+ tickets                      | priority_id                    | uuid                     | YES         | 
+ tickets                      | number                         | bigint                   | NO          | 
+ tickets                      | category                       | text                     | NO          | 
+ tickets                      | title                          | text                     | NO          | 
+ tickets                      | description                    | text                     | NO          | 
+ tickets                      | status                         | USER-DEFINED             | NO          | 'NEW'::ticket_status
+ tickets                      | requested_at                   | timestamp with time zone | NO          | now()
+ tickets                      | started_at                     | timestamp with time zone | YES         | 
+ tickets                      | finished_at                    | timestamp with time zone | YES         | 
+ tickets                      | due_at                         | timestamp with time zone | YES         | 
+ tickets                      | requester_name                 | text                     | YES         | 
+ tickets                      | requester_extension            | text                     | YES         | 
+ tickets                      | requester_signature_key        | text                     | YES         | 
+ tickets                      | decision_at                    | timestamp with time zone | YES         | 
+ tickets                      | decided_by                     | uuid                     | YES         | 
+ tickets                      | denial_reason                  | text                     | YES         | 
+ tickets                      | decision_signature_key         | text                     | YES         | 
+ tickets                      | target_team                    | text                     | YES         | 
+ trainings                    | id                             | uuid                     | NO          | gen_random_uuid()
+ trainings                    | tenant_id                      | uuid                     | NO          | 
+ trainings                    | title                          | text                     | NO          | 
+ trainings                    | description                    | text                     | YES         | 
+ trainings                    | due_date                       | date                     | YES         | 
+ trainings                    | audience                       | jsonb                    | NO          | '{}'::jsonb
+ trainings                    | active                         | boolean                  | NO          | true
+ user_dashboard_preferences   | id                             | uuid                     | NO          | gen_random_uuid()
+ user_dashboard_preferences   | tenant_id                      | uuid                     | NO          | 
+ user_dashboard_preferences   | user_id                        | uuid                     | NO          | 
+ user_dashboard_preferences   | widget_key                     | text                     | NO          | 
+ user_dashboard_preferences   | visible                        | boolean                  | NO          | true
+ user_dashboard_preferences   | favorite                       | boolean                  | NO          | false
+ user_dashboard_preferences   | position                       | integer                  | NO          | 0
+ users                        | id                             | uuid                     | NO          | gen_random_uuid()
+ users                        | person_id                      | uuid                     | NO          | 
+ users                        | email                          | text                     | NO          | 
+ users                        | password_hash                  | text                     | NO          | 
+ users                        | must_change_password           | boolean                  | NO          | true
+ users                        | active                         | boolean                  | NO          | true
+ users                        | failed_attempts                | integer                  | NO          | 0
+ users                        | locked_until                   | timestamp with time zone | YES         | 
+ users                        | created_at                     | timestamp with time zone | NO          | now()
+ vehicles                     | id                             | uuid                     | NO          | gen_random_uuid()
+ vehicles                     | tenant_id                      | uuid                     | NO          | 
+ vehicles                     | asset_id                       | uuid                     | YES         | 
+ vehicles                     | plate                          | text                     | NO          | 
+ vehicles                     | make                           | text                     | YES         | 
+ vehicles                     | model                          | text                     | YES         | 
+ vehicles                     | year                           | integer                  | YES         | 
+ vehicles                     | odometer                       | numeric                  | YES         | 
+ warehouses                   | id                             | uuid                     | NO          | gen_random_uuid()
+ warehouses                   | tenant_id                      | uuid                     | NO          | 
+ warehouses                   | sector_id                      | uuid                     | YES         | 
+ warehouses                   | name                           | text                     | NO          | 
+ work_order_checklist_results | id                             | uuid                     | NO          | gen_random_uuid()
+ work_order_checklist_results | tenant_id                      | uuid                     | NO          | 
+ work_order_checklist_results | work_order_id                  | uuid                     | NO          | 
+ work_order_checklist_results | checklist_id                   | uuid                     | NO          | 
+ work_order_checklist_results | answers                        | jsonb                    | NO          | '{}'::jsonb
+ work_order_checklist_results | completed_by                   | uuid                     | YES         | 
+ work_order_checklist_results | completed_at                   | timestamp with time zone | YES         | 
+ work_order_materials         | id                             | uuid                     | NO          | gen_random_uuid()
+ work_order_materials         | tenant_id                      | uuid                     | NO          | 
+ work_order_materials         | work_order_id                  | uuid                     | NO          | 
+ work_order_materials         | item_id                        | uuid                     | YES         | 
+ work_order_materials         | description                    | text                     | NO          | 
+ work_order_materials         | source                         | text                     | NO          | 
+ work_order_materials         | warehouse_id                   | uuid                     | YES         | 
+ work_order_materials         | quantity                       | numeric                  | NO          | 
+ work_order_materials         | unit_cost                      | numeric                  | YES         | 
+ work_order_materials         | created_at                     | timestamp with time zone | NO          | now()
+ work_orders                  | id                             | uuid                     | NO          | gen_random_uuid()
+ work_orders                  | tenant_id                      | uuid                     | NO          | 
+ work_orders                  | ticket_id                      | uuid                     | YES         | 
+ work_orders                  | asset_id                       | uuid                     | YES         | 
+ work_orders                  | kind                           | USER-DEFINED             | NO          | 
+ work_orders                  | number                         | bigint                   | NO          | 
+ work_orders                  | status                         | text                     | NO          | 'OPEN'::text
+ work_orders                  | scheduled_for                  | timestamp with time zone | YES         | 
+ work_orders                  | started_at                     | timestamp with time zone | YES         | 
+ work_orders                  | finished_at                    | timestamp with time zone | YES         | 
+ work_orders                  | result                         | text                     | YES         | 
+ work_orders                  | labor_minutes                  | integer                  | YES         | 
+ work_orders                  | accepted_by                    | uuid                     | YES         | 
+ work_orders                  | accepted_at                    | timestamp with time zone | YES         | 
+ work_orders                  | priority_id                    | uuid                     | YES         | 
+ work_orders                  | lead_id                        | uuid                     | YES         | 
+ work_orders                  | technician_id                  | uuid                     | YES         | 
+ work_orders                  | service_description            | text                     | YES         | 
+ work_orders                  | before_photo_key               | text                     | YES         | 
+ work_orders                  | after_photo_key                | text                     | YES         | 
+ work_orders                  | technician_signature_key       | text                     | YES         | 
+ work_orders                  | checklist_id                   | uuid                     | YES         | 
+ work_orders                  | requester_signature_key        | text                     | YES         | 
+ work_orders                  | requester_confirmed_at         | timestamp with time zone | YES         | 
+ work_orders                  | service_rating                 | text                     | YES         | 
+ work_orders                  | requester_feedback             | text                     | YES         | 
+(297 rows)
+

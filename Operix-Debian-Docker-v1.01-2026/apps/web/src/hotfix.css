@@ -1,0 +1,2 @@
+/* Nested administration panel must not inherit the fixed application sidebar. */
+aside.admin-tree{position:static!important;inset:auto!important;width:auto!important;min-height:0!important;height:auto!important;z-index:auto!important;display:block!important;transform:none!important}
