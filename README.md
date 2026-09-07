@@ -1,6 +1,6 @@
 # Operix v1.01-2026
 
-Plataforma operacional multiempresa para Grafmarques, INFINNI e M.Print. Reúne chamados do solicitante, aprovação setorial, ordens de serviço, manutenção, TI, gestão de frota, avaliações obrigatórias, Segurança do Trabalho, almoxarifado, inventário de EPIs, cadastros, relatórios e controle de acesso.
+Plataforma operacional multiempresas. Reúne chamados do solicitante, aprovação setorial, ordens de serviço, manutenção, TI, gestão de frota, avaliações obrigatórias, Segurança do Trabalho, almoxarifado, inventário de EPIs, cadastros, relatórios e controle de acesso.
 
 ## Fluxo operacional da versão
 
